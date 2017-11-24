@@ -17,10 +17,10 @@ object FunctionalAssignment {
   def unknown[A, B](as: Seq[A], fn: A => B): Seq[B] = for (x <- as) yield fn(x)
 
   /**
-    * Returns the absolute value of the parameter i.
+    * Returns absolute value of the parameter i.
     *
     * @param i a value, either with a positive or a negative sign.
-    * @return
+    * @return absolute i
     */
   def abs(i: Int): Int = if (i < 0) (-i) else i
 
@@ -34,12 +34,12 @@ object FunctionalAssignment {
   //
   /**
     *
-    * @param as
-    * @param b
-    * @param fn
-    * @tparam A
-    * @tparam B
-    * @return
+    * @param as -> Seq[A] -> List of Values A
+    * @param b -> accumulator for every intermediate result of type B
+    * @param function -> function applied to the list as
+    * @tparam A -> input param for the function fn
+    * @tparam B -> output param of the function fn
+    * @return -> returns a vaue of type B
     */
   def op[A, B](as: Seq[A], b: B)(fn: (B, A) => B): B = as.foldLeft(b)(fn)
 
@@ -48,7 +48,7 @@ object FunctionalAssignment {
     * Use the function 'op' defined above.
     *
     * @param numbers
-    * @return
+    * @return an Integer
     */
   def sum(numbers: Seq[Int]): Int = op(numbers,0) (_+_)
 
