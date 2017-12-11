@@ -14,7 +14,20 @@ object RpnCalculator {
     * @param s a string representing a calculation, for example '1 2 +'
     * @return
     */
-  def apply(s: String): Try[RpnCalculator] = Try(RpnCalculator())
+
+  def apply(s: String): Try[RpnCalculator] = {
+    if (s.isEmpty)
+      Try(RpnCalculator())
+    else {
+      try {
+        val stack: List[Op] = s.split(' ').map(e => Op(e)).toList
+        stack.foldLeft(Try(RpnCalculator()))(
+          (acc, elem) => acc.get.push(elem))
+      } catch {
+        case e: Exception => Try[RpnCalculator](throw e)
+      }
+    }
+  }
 
 }
 
@@ -26,13 +39,43 @@ object RpnCalculator {
 case class RpnCalculator(stack: List[Op] = Nil) {
 
   /**
-    * By pushing Op on the stack, the Op is potentially executed. If it is a Val, it the op instance is just put on the
+    * By pushing Op on the stack, the Op is potentially executed. If it is a Val, the op instance is just put on the
     * stack, if not then the stack is examined and the correct operation is performed.
     *
     * @param op
     * @return
     */
-  def push(op: Op): Try[RpnCalculator] = ???
+  def push(op: Op): Try[RpnCalculator] = {
+
+    op match {
+      case v: Val => Try(RpnCalculator(stack :+ v))
+      case o: BinOp =>
+        try {
+          def nextVal(rpnCal: RpnCalculator): Val = {
+            val value = rpnCal.peek()
+            value match {
+              case v: Val   => v
+              case _: BinOp => throw new NoSuchElementException
+            }
+          }
+
+          val first = nextVal(this)
+          var calculate = pop()._2
+
+          val second = nextVal(calculate)
+          calculate = calculate.pop()._2
+
+          //Executes the given Operation on a value
+          val result: Val = o.eval(first, second)
+
+          //Adds the result on the stack
+          calculate.push(result)
+        } catch {
+          case e: Exception => Try[RpnCalculator](throw e)
+        }
+    }
+  }
+
 
   /**
     * Pushes val's on the stack.
@@ -42,26 +85,31 @@ case class RpnCalculator(stack: List[Op] = Nil) {
     * @param op
     * @return
     */
-  def push(op: Seq[Op]): Try[RpnCalculator] = ???
+  def push(op: Seq[Op]): Try[RpnCalculator] = op.foldLeft(Try(RpnCalculator()))((acc, elem) => acc.get.push(elem))
 
   /**
     * Returns an tuple of Op and a RevPolCal instance with the remainder of the stack.
     *
     * @return
     */
-  def pop(): (Op, RpnCalculator) = ???
+  def pop(): (Op, RpnCalculator) = (stack.head, RpnCalculator(stack.tail))
 
   /**
     * If stack is nonempty, returns the top of the stack. If it is empty, this function throws a NoSuchElementException.
     *
     * @return
     */
-  def peek(): Op = ???
+  def peek(): Op = {
+    if (stack.isEmpty)
+      throw new NoSuchElementException
+    else
+      stack.head
+  }
 
   /**
     * returns the size of the stack.
     *
     * @return
     */
-  def size: Int = ???
+  def size: Int = stack.size
 }
