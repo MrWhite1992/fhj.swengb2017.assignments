@@ -7,16 +7,31 @@
 | Hours
 | Description
 
-| 29.11.17
-| 1
-| Review of this and that
+| 3.12.2017
+| 6
+| getting an overview of the task + start and finish of GuI
 
-| 30.11.17
+| 5.12.2017
+| 4
+| implementing css
+
+| 6.12.2017
+| 3
+| RPNOperations started and finished
+
+| 7.12.2017
 | 5
-| implemented css
+| started working on CalculatorApp
+| 8.12.2017
+| 4
+| started RPNCalculator (apply function)
 
-| 11.07.17
-| 2
-| fixed bugs
+| 9.12.2017
+| 6
+| continued RPNCalculator (push function)
+
+| 10.12.2017
+| 4
+| finished RPNCalculator
 
 |===
