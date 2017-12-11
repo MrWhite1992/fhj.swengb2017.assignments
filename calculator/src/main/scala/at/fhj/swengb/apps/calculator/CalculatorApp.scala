@@ -65,7 +65,7 @@ class CalculatorFxController extends Initializable {
   }
 
   def calc(): Unit = {
-    getCalculator().push(Op(numberTextField1.getText)) match {
+    getCalculator().push(Op(numberTextField3.getText)) match {
       case Success(c) => setCalculator(c)
       case Failure(e) => // show warning / error
     }
