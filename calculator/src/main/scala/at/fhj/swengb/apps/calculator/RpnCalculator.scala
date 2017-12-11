@@ -14,7 +14,7 @@ object RpnCalculator {
     * @param s a string representing a calculation, for example '1 2 +'
     * @return
     */
-  def apply(s: String): Try[RpnCalculator] = ???
+  def apply(s: String): Try[RpnCalculator] = Try(RpnCalculator())
 
 }
 
